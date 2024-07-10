@@ -30,12 +30,14 @@ def is_palindrome(head):
     while slow:
         next_node = slow.next
         slow.next = prev
+        prev = slow
+        slow = next_node
     
-
-
-# edge cases
-head = None
-print(is_palindrome(head))
-
-head1 = Node(1, Node(2, Node(1, Node(1))))
-print(is_palindrome(head1))
+    left, right = head, prev
+    while right:
+        if right.val != left.val:
+            return False
+        left = left.next
+        right = right.next
+    return True
+    
