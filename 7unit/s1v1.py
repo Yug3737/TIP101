@@ -154,80 +154,59 @@ def find_floor(lst, x):
 
 # Expected Output: 1
 
-print(find_floor([], 3))  # expect -1
-print(find_floor([3, 4, 5, 6], 1))  # expect None
-print(find_floor([1, 2, 8, 10, 10, 12, 19], 5))  # expect 2
+# print(find_floor([], 3))  # expect -1
+# print(find_floor([3, 4, 5, 6], 1))  # expect None
+# print(find_floor([1, 2, 8, 10, 10, 12, 19], 5))  # expect 2
 
-def find_first(list, target):
-  left, right = 0, len(list) -1
-  first_index = -1
-  while left <= right:
-      mid = (left + right) //2
-      if list[mid] == target:
-        first_index = mid
-        right = mid - 1 
-      elif list[mid] > target:
-        right = mid -1
-      else:
-        left = mid + 1
-  return first_index
 
-def find_last(list, target):
-  left, right = 0, len(list) -1
-  last_index = -1
-  while left <= right:
-      mid = (left + right)// 2
-      if list[mid] == target:
-        last_index = mid
-        left = mid + 1
-      elif list[mid] > target:
-        right = mid -1
-      else:
-        left = mid + 1
-  return last_index
+def is_nice(sub):
+  """check if substr is nice, ie contains an instance of both upper and lowercase letters"""
+  lower_count = {}
+  upper_count = {}
 
-# print(find_first([2,4,10,10,10,12,20], 10)) # expect 2
-# print(find_last([2,4,10,10,10,12,20], 10)) # expect 4
+  # COunting lower and upper case characters
+  for char in sub:
+    if 'a' <= char <= 'z':
+      lower_count[char] = lower_count.get(char, 0) + 1
+    elif 'A' <= char <= 'Z':
+      upper_count[char] = upper_count.get(char, 0) + 1
 
-def find_frequencies(nums):
-  freq_map = {}
-  i = 0
-  while i < len(nums):
-    if nums[i] in freq_map:
-      i += 1
-      continue
-    first = find_first(nums, nums[i])
-    last = find_last(nums, nums[i])
-    freq_map[nums[i]] = last - first + 1
-    i = last+ 1
-  return freq_map
+  # Check for each lowercase char if there is an upperCase and VICE VERSA
+  for char in lower_count:
+    upper_char = char.upper()
+    if upper_char not in upper_count:
+      return False
 
-print(find_frequencies([1, 2, 2, 3, 3, 3, 4]))
+  for char in upper_count:
+    lower_char = char.lower()
+    if lower_char not in lower_count:
+      return False
 
-def merge(left_arr, right_arr):
-	# Initialize an empty list to store the merged result
-  result = []
-	# Initialize a pointer to iterate over the left input list
-  left = right = 0
-  while left < len(left_arr) and right < len(right_arr):
-    if left_arr[left] > right_arr[right]:
-      result.append(right_arr[right])
-      right+= 1
-    else:
-      result.append(left_arr[left])
-      left += 1
+  return True 
 
-  while left < len(left_arr):
-    result.append(left_arr[left])
-    left += 1
-  while right < len(right_arr):
-    result.append(right_arr[right])
-    right += 1
-  return result
+def longest_nice(substr):
+  if len(substr) < 2:
+    return ""
+  if is_nice(substr):
+    return substr
+  mid = len(substr) // 2
+  left = longest_nice(substr[:mid])
+  right = longest_nice(substr[mid:])
+  if len(left) >= len(right):
+    return left
+  else:
+    return right
 
-def merge_sort(lst):
-  left, right = 0, len(lst) -1
-  mid = (left + right) // 2 
 
-  if left
-  merge_sort(lst[left:mid], lst[mid+1:right])
+def longest_nice_substring(s):
+  if len(s) < 2:
+    return ""
+  return longest_nice(s)
+
+  
+  
+
+# edge cases
+print(longest_nice_substring("")) # expect ""
+print(longest_nice_substring("aAaaaaaaa")) # expect same string
+print(longest_nice_substring("bbbBCdd")) # expect bbbB
