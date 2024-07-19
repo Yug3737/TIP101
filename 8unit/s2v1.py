@@ -83,9 +83,6 @@
 # root = TreeNode(1, TreeNode(1, TreeNode(2)), TreeNode(1))
 # print(height(root))
 
-
-
-
 # Input: root = 10, key = 9, value = 'Naruto' 
 # Expected Output: root = 10
 # Expected Output Tree:
