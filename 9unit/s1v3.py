@@ -25,4 +25,26 @@ def bfs(root):
 
 
 root = TreeNode(19, TreeNode(7, TreeNode(5, None, TreeNode(6)), None), TreeNode(25, TreeNode(22), TreeNode(71, TreeNode(30), TreeNode(96))))
-print(bfs(root))
+# print(bfs(root))
+
+def evaluate_tree(root):
+    if not root:
+        return 0
+
+    if not root.left and  not root.right:
+        return root.val
+    
+    leftVal = evaluate_tree(root.left)
+    rightVal = evaluate_tree(root.right)
+
+    if root.val == '+':
+        return leftVal + rightVal
+    elif root.val == '-':
+        return leftVal - rightVal
+    elif root.val == '*':
+        return leftVal * rightVal
+    else:
+        return leftVal / rightVal
+
+root = TreeNode('+',TreeNode('-', TreeNode(10), TreeNode(5)), TreeNode('*', TreeNode(2), TreeNode(3)))
+print(evaluate_tree(root))
