@@ -48,3 +48,53 @@ def evaluate_tree(root):
 
 root = TreeNode('+',TreeNode('-', TreeNode(10), TreeNode(5)), TreeNode('*', TreeNode(2), TreeNode(3)))
 print(evaluate_tree(root))
+
+
+# this solution only works if all the values in the original tree are unique
+# def get_target_copy(original, cloned, target):
+
+#     def dfs(node):
+#         if not node:
+#             return None
+#         elif node.val == target.val:
+#             return node
+        
+#         return dfs(node.left) or dfs(node.right)
+    
+#     return dfs(cloned)
+
+def get_target_copy(original, cloned, target):
+
+    def dfs(originalNode, clonedNode):
+        if not originalNode:
+            return None
+        elif originalNode == target:
+            return clonedNode
+        else:
+            return dfs(originalNode.left, clonedNode.left, target) or dfs(originalNode.right, clonedNode.right, target)
+        
+    dfs(original, cloned)
+
+def has_path_sum(root, target_sum):
+    if not root:
+        return False
+    if not root.right and not root.left:
+        return root.val == target_sum 
+    return has_path_sum(root.left, target_sum - root.val) or has_path_sum(root.right, target_sum - root.val)
+
+# 1) Base case: If the current node is None, return False.
+# 2) Check if the current node is a leaf (no children) and if its value equals target_sum.
+# 3) Recursively check the left and right subtrees with the updated target_sum (subtract the current node's value from target_sum).
+# 4) Return True if either subtree has a valid path, otherwise return False.
+print("here")
+root = TreeNode(1, TreeNode(2), TreeNode(3))
+print(root, 5) # returns false
+#       5
+#      / \
+#     4   8
+#    /   / \  
+#   11  13  4
+#  / \       \
+# 7   2       1
+root = TreeNode(5,TreeNode(4, TreeNode(11, TreeNode(7), TreeNode(2))), TreeNode(8, TreeNode(13), TreeNode(4, None, TreeNode(1))))
+print(has_path_sum(root, 22)) # expect Treu
