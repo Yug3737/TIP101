@@ -75,6 +75,8 @@ def get_target_copy(original, cloned, target):
         
     dfs(original, cloned)
 
+# The idea is that we go on subtracting current value from targetSum and when we are at the leaf,
+# valud of target sum will be equal to leafNode's value
 def has_path_sum(root, target_sum):
     if not root:
         return False
@@ -86,9 +88,9 @@ def has_path_sum(root, target_sum):
 # 2) Check if the current node is a leaf (no children) and if its value equals target_sum.
 # 3) Recursively check the left and right subtrees with the updated target_sum (subtract the current node's value from target_sum).
 # 4) Return True if either subtree has a valid path, otherwise return False.
-print("here")
+# print("here")
 root = TreeNode(1, TreeNode(2), TreeNode(3))
-print(root, 5) # returns false
+# print(root, 5) # returns false
 #       5
 #      / \
 #     4   8
@@ -97,4 +99,24 @@ print(root, 5) # returns false
 #  / \       \
 # 7   2       1
 root = TreeNode(5,TreeNode(4, TreeNode(11, TreeNode(7), TreeNode(2))), TreeNode(8, TreeNode(13), TreeNode(4, None, TreeNode(1))))
-print(has_path_sum(root, 22)) # expect Treu
+# print(has_path_sum(root, 22)) # expect Treu
+
+def check_balance_and_height(node):
+    if not node:
+        return True, 0
+
+    leftBalanced, leftHeight = check_balance_and_height(node.left)
+    rightBalanced, rightHeight = check_balance_and_height(node.right)
+    
+    balanced = leftBalanced and rightBalanced and abs(leftHeight - rightBalanced) <= 1
+    nodeHeight = 1 + max(leftHeight, rightHeight)
+
+    return balanced, nodeHeight
+    
+def is_balanced(root):
+    balanced, height = check_balance_and_height(root)
+    return balanced
+
+
+print(is_balanced(None)) # returns True
+print(is_balanced(TreeNode(1,TreeNode(2), TreeNode(3)))) # returns true
