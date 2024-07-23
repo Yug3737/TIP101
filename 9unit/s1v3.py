@@ -2,7 +2,7 @@
 from collections import deque
 
 class TreeNode:
-    def __init__(self,val,left=None,right=None) -> None:
+    def __init__(self,val=0,left=None,right=None) -> None:
         self.val = val
         self.left = left
         self.right = right
@@ -118,5 +118,54 @@ def is_balanced(root):
     return balanced
 
 
-print(is_balanced(None)) # returns True
-print(is_balanced(TreeNode(1,TreeNode(2), TreeNode(3)))) # returns true
+# print(is_balanced(None)) # returns True
+# print(is_balanced(TreeNode(1,TreeNode(2), TreeNode(3)))) # returns true
+
+# 1) Define a helper function `post_order(node)` to perform post-order traversal.
+#     a) If the current node is None, return 0.
+#     b) Recursively calculate the sum of the left subtree.
+#     c) Recursively calculate the sum of the right subtree.
+#     d) Update the current node's value to be the sum of the left and right subtree values.
+#     e) Return the sum of the current subtree including the original node's value.
+# 2) In the main function `sum_transform(root)`, call the helper function to start the post-order traversal from the root.
+# 3) Return the modified root.
+
+def post_order(node):
+    if not node:
+        return 0 
+    leftSum = post_order(node.left)
+    rightSum = post_order(node.right)
+
+    originalValue = node.val
+    node.val = leftSum + rightSum
+
+    return node.val + originalValue
+
+def sum_transform(root):
+    root = post_order(root)
+    return root
+    
+
+#     1
+#    / \
+#   /   \ 
+#  /     \
+# 2       3
+#  \     / \
+#   4    5  6
+#       / \
+#      7   8  
+
+# Expected Output Tree:
+
+#     35
+#    /  \
+#   /    \ 
+#  /      \
+# 4       26
+#  \      / \
+#   0    15  0
+#       / \
+#      0   0  
+root = TreeNode(1, TreeNode(2, None, TreeNode(4)), TreeNode(3, TreeNode(5, TreeNode(7), TreeNode(8)), TreeNode(6)))
+print(sum_transform(root))
